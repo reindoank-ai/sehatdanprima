@@ -2,7 +2,8 @@ import { ReactNode } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { Button } from './Button';
 import { useAppContext } from '../hooks/useAppContext';
-import { Moon, Sun } from 'lucide-react';
+import { Sheet, SheetContent, SheetTrigger } from './Sheet';
+import { Moon, Sun, LayoutGrid, BarChart3, Sparkles, HelpCircle, User, LogOut, Menu } from 'lucide-react';
 
 const Layout = ({ children }: { children: ReactNode }) => {
   const { logout, theme, toggleTheme } = useAppContext();
@@ -13,64 +14,83 @@ const Layout = ({ children }: { children: ReactNode }) => {
     navigate('/');
   };
 
-  return (
-    <div className="flex min-h-screen w-full flex-col">
-      <header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
-        <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
-          <Link
-            to="/"
-            className="flex items-center gap-2 text-lg font-semibold md:text-base"
-          >
-            <span className="">Sehat & Prima</span>
-          </Link>
-          <NavLink
-            to="/dashboard"
-            className={({ isActive }) =>
-              isActive ? 'text-foreground' : 'text-muted-foreground transition-colors hover:text-foreground'
-            }
-          >
-            Dashboard
-          </NavLink>
-          <NavLink
-            to="/stats"
-            className={({ isActive }) =>
-              isActive ? 'text-foreground' : 'text-muted-foreground transition-colors hover:text-foreground'
-            }
-          >
-            Stats
-          </NavLink>
-          <NavLink
-            to="/programs"
-            className={({ isActive }) =>
-              isActive ? 'text-foreground' : 'text-muted-foreground transition-colors hover:text-foreground'
-            }
-          >
-            Programs
-          </NavLink>
+  const navLinkClasses = ({ isActive }: { isActive: boolean }) =>
+    `flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary ${isActive ? 'bg-muted text-primary' : 'text-muted-foreground'}`;
 
-          <NavLink
-            to="/petunjuk"
-            className={({ isActive }) =>
-              isActive ? 'text-foreground' : 'text-muted-foreground transition-colors hover:text-foreground'
-            }
-          >
-            Petunjuk
-          </NavLink>
-        </nav>
-        <div className="flex w-full items-center gap-4 md:ml-auto md:gap-2 lg:gap-4">
-          <div className="ml-auto flex items-center gap-4">
-            <Button variant="ghost" size="icon" onClick={toggleTheme}>
-              <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-              <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-              <span className="sr-only">Toggle theme</span>
-            </Button>
-            <Button onClick={handleLogout}>Logout</Button>
+  const NavContent = () => (
+    <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
+      <NavLink to="/dashboard" className={navLinkClasses}>
+        <LayoutGrid className="h-4 w-4" />
+        Dashboard
+      </NavLink>
+      <NavLink to="/stats" className={navLinkClasses}>
+        <BarChart3 className="h-4 w-4" />
+        Stats
+      </NavLink>
+      <NavLink to="/programs" className={navLinkClasses}>
+        <Sparkles className="h-4 w-4" />
+        Programs
+      </NavLink>
+      <NavLink to="/petunjuk" className={navLinkClasses}>
+        <HelpCircle className="h-4 w-4" />
+        Petunjuk
+      </NavLink>
+    </nav>
+  );
+
+  return (
+    <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
+      <div className="hidden border-r bg-muted/40 md:block">
+        <div className="flex h-full max-h-screen flex-col gap-2">
+          <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
+            <Link to="/dashboard" className="flex items-center gap-2 font-semibold">
+              <Sparkles className="h-6 w-6 text-primary" />
+              <span className="">Sehat & Prima</span>
+            </Link>
+          </div>
+          <div className="flex-1">
+            <NavContent />
           </div>
         </div>
-      </header>
-      <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
-        {children}
-      </main>
+      </div>
+      <div className="flex flex-col">
+        <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6">
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button variant="outline" size="icon" className="shrink-0 md:hidden">
+                <Menu className="h-5 w-5" />
+                <span className="sr-only">Toggle navigation menu</span>
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="left" className="flex flex-col">
+              <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
+                <Link to="/dashboard" className="flex items-center gap-2 font-semibold">
+                  <Sparkles className="h-6 w-6 text-primary" />
+                  <span className="">Sehat & Prima</span>
+                </Link>
+              </div>
+              <NavContent />
+            </SheetContent>
+          </Sheet>
+          <div className="w-full flex-1">
+            {/* Page title or search could go here */}
+          </div>
+          <Button variant="ghost" size="icon" onClick={toggleTheme} aria-label="Toggle theme">
+            <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+            <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+          </Button>
+          <NavLink to="/account" className={navLinkClasses}>
+            <User className="h-5 w-5" />
+            <span className="sr-only">Account</span>
+          </NavLink>
+          <Button variant="ghost" size="icon" onClick={handleLogout} aria-label="Logout">
+            <LogOut className="h-5 w-5" />
+          </Button>
+        </header>
+        <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6 bg-background">
+          {children}
+        </main>
+      </div>
     </div>
   );
 };
