@@ -10,8 +10,8 @@ import Dashboard from '../pages/Dashboard';
 import Stats from '../pages/Stats';
 import Programs from '../pages/Programs';
 import Account from '../pages/Account';
-import Upgrade from '../pages/Upgrade';
-import PaymentSuccess from '../pages/PaymentSuccess';
+
+import Petunjuk from '../pages/Petunjuk';
 
 const AppRouter = () => {
   const { user } = useAppContext();
@@ -21,14 +21,7 @@ const AppRouter = () => {
       path: '/',
       element: user ? <Navigate to="/dashboard" /> : <Landing />,
     },
-    {
-      path: '/upgrade',
-      element: <Upgrade />,
-    },
-    {
-      path: '/success',
-      element: <PaymentSuccess />,
-    },
+    
     {
       path: '/onboarding-goals',
       element: <OnboardingGoals />,
@@ -55,6 +48,10 @@ const AppRouter = () => {
         {
           path: '/account',
           element: <Account />,
+        },
+        {
+          path: '/petunjuk',
+          element: <Petunjuk />,
         },
       ],
     },

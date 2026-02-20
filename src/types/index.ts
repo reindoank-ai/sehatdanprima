@@ -1,13 +1,12 @@
 export interface User {
   id: string;
   email: string;
-  isPremium: boolean;
 }
 
 export interface Habit {
   id: string;
   name: string;
-  completed: boolean;
+  completedDates: string[]; // Store dates as ISO strings (e.g., '2023-10-27')
 }
 
 export interface AppState {
@@ -15,9 +14,19 @@ export interface AppState {
   habits: Habit[];
 }
 
+export interface Program {
+  id: string;
+  title: string;
+  description: string;
+  habits: Omit<Habit, 'id' | 'completedDates'>[];
+}
+
 export interface AppContextType extends AppState {
+  theme: 'light' | 'dark' | 'system';
   login: (user: User) => void;
   logout: () => void;
-  addHabit: (habit: Habit) => boolean;
+  addHabit: (habit: Habit) => void;
+  addMultipleHabits: (habits: Omit<Habit, 'id' | 'completedDates'>[]) => void;
   toggleHabit: (id: string) => void;
+  toggleTheme: () => void;
 }

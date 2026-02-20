@@ -29,7 +29,7 @@ export default function OnboardingHabits() {
       const newHabit: Habit = {
         id: Date.now().toString() + habitName,
         name: habitName,
-        completed: false,
+        completedDates: [],
       };
       addHabit(newHabit);
     });

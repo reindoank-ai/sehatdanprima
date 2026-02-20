@@ -1,13 +1,17 @@
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from 'recharts';
 import Layout from '../components/Layout';
 import { useAppContext } from '../hooks/useAppContext';
+import CalendarView from '../components/CalendarView';
 
 export default function Stats() {
   const { habits } = useAppContext();
 
+  const today = new Date().toISOString().split('T')[0];
+  const completedTodayCount = habits.filter(h => h.completedDates.includes(today)).length;
+
   const data = [
-    { name: 'Completed', value: habits.filter((h) => h.completed).length },
-    { name: 'Pending', value: habits.filter((h) => !h.completed).length },
+    { name: 'Completed', value: completedTodayCount },
+    { name: 'Pending', value: habits.length - completedTodayCount },
   ];
 
   return (
@@ -27,7 +31,7 @@ export default function Stats() {
           </div>
           <div className="p-6 pt-0">
             <div className="text-2xl font-bold">
-              {habits.length > 0 ? `${Math.round((habits.filter((h) => h.completed).length / habits.length) * 100)}%` : 'N/A'}
+              {habits.length > 0 ? `${Math.round((completedTodayCount / habits.length) * 100)}%` : 'N/A'}
             </div>
           </div>
         </div>
@@ -43,6 +47,9 @@ export default function Stats() {
             </BarChart>
           </ResponsiveContainer>
         </div>
+      </div>
+      <div className="mt-8">
+        <CalendarView habits={habits} />
       </div>
     </Layout>
   );
