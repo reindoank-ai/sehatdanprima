@@ -16,8 +16,13 @@ export interface AppState {
 
 export interface Program {
   id: string;
+  emoji: string;
   title: string;
   description: string;
+  longDescription: string;
+  category: 'Kesehatan' | 'Pikiran' | 'Produktivitas';
+  duration: string; // e.g., '7 Days'
+  image: string;
   habits: Omit<Habit, 'id' | 'completedDates'>[];
 }
 

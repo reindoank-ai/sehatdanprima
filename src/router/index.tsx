@@ -10,6 +10,7 @@ import Dashboard from '../pages/Dashboard';
 import Stats from '../pages/Stats';
 import Programs from '../pages/Programs';
 import Account from '../pages/Account';
+import ProgramDetail from '../pages/ProgramDetail';
 
 import Petunjuk from '../pages/Petunjuk';
 
@@ -44,6 +45,10 @@ const AppRouter = () => {
         {
           path: '/programs',
           element: <Programs />,
+        },
+        {
+          path: '/program/:id',
+          element: <ProgramDetail />,
         },
         {
           path: '/account',

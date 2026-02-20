@@ -1,46 +1,38 @@
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Layout from '../components/Layout';
-import { useAppContext } from '../hooks/useAppContext';
 import { programs } from '../data/programs';
-import { Button } from '../components/Button';
-import { Program } from '../types';
+import { Clock, Layers } from 'lucide-react';
 
 export default function Programs() {
-  const { addMultipleHabits } = useAppContext();
-  const navigate = useNavigate();
-
-  const handleStartProgram = (program: Program) => {
-    addMultipleHabits(program.habits);
-    navigate('/dashboard');
-  };
-
   return (
     <Layout>
       <div className="text-center mb-12">
-        <h1 className="text-4xl font-bold mb-2">Guided Programs</h1>
-        <p className="text-lg text-muted-foreground">Unlock your potential with our expert-led programs.</p>
+        <h1 className="text-4xl font-bold mb-2">Program Terpandu</h1>
+        <p className="text-lg text-muted-foreground">Pilih program yang sesuai dengan tujuan Anda dan mulailah perjalanan Anda.</p>
       </div>
       <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3 max-w-6xl mx-auto">
         {programs.map((program) => (
-          <div key={program.id} className="rounded-xl border bg-card text-card-foreground shadow flex flex-col">
-            <div className="p-6 flex-grow">
-              <h2 className="text-2xl font-bold mb-2">{program.title}</h2>
-              <p className="text-muted-foreground mb-4">{program.description}</p>
-              <ul className="space-y-2 text-sm text-left">
-                {program.habits.map((habit) => (
-                  <li key={habit.name} className="flex items-center gap-2">
-                    <span className="text-green-500">✓</span>
-                    <span>{habit.name}</span>
-                  </li>
-                ))}
-              </ul>
+          <Link to={`/program/${program.id}`} key={program.id} className="group block rounded-xl border bg-card text-card-foreground shadow-sm overflow-hidden transition-all hover:shadow-lg hover:-translate-y-1">
+            <div className="relative">
+              <img src={program.image} alt={program.title} className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300" />
+              <div className="absolute bottom-0 left-0 bg-gradient-to-t from-black/60 to-transparent w-full p-4">
+                <h2 className="text-xl font-bold text-white">{program.emoji} {program.title}</h2>
+              </div>
             </div>
-            <div className="p-6 pt-0">
-              <Button className="w-full" onClick={() => handleStartProgram(program)}>
-                Start Program
-              </Button>
+            <div className="p-6">
+              <p className="text-muted-foreground mb-4 h-10">{program.description}</p>
+              <div className="flex justify-between text-sm text-muted-foreground">
+                <div className="flex items-center gap-2">
+                  <Layers size={16} />
+                  <span>{program.category}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Clock size={16} />
+                  <span>{program.duration}</span>
+                </div>
+              </div>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
     </Layout>
